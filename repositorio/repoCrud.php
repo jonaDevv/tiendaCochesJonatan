@@ -4,13 +4,13 @@
 
         public static function create($o);
 
-        public static function read($id);
+        public static function read($id):object;
 
-        public static function update($id,$o);
+        public static function update($id,$o):bool;
 
-        public static function delete($id);      
+        public static function delete($id):bool;      
           
-        public static function findAll();
+        public static function getAll():array;
 
     
     

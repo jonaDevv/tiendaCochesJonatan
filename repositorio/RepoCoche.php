@@ -3,51 +3,26 @@
     Class RepoCoche implements RepoCrud{
 
 
-        private static listaCoches = [];
-
-        function nuevoCoche(Coche coche):Coche
-        {
-
-               Conexion::getConection();
-
-               
+        private static $listaCoches = [];
 
 
+        
+        //METODOS CRUD
 
-        return new coche(,,,,,);} //SI NO EXISTE DEVUELVE NULL SI EXISTE NO DA EL ID
+        public static function create($coche){
 
-
-        function getById(int id):Coche
-        { 
+            self::$listaCoches[] = $coche;
             
-            return new Coche(); 
-        
-        
+            
         }
 
-
+        public static function read($id): Coche { 
+            $thisCoche = null; 
         
-            //METODOS CRUD
-
-
-        public function create($coche){
-
-            $this.listaCoches = $coche;
-            
-            //tiene que devolverlo?
-        }
-
-        public function update(int $id): Coche {
-            $thisCoche = null; // Inicializa la variable en caso de que no se encuentre
-        
-            foreach ($this->listaCoches as $coche) {
-                if ($coche['id'] === $id) { // Compara el id del coche
-                    $thisCoche = $coche; // Asigna el coche encontrado
-                    break; // Sal del bucle una vez encontrado
-                } else {
-
-                    
-
+            foreach (self::$listaCoches as $coche) {
+                if ($coche->getId() === $id) { 
+                    $thisCoche = $coche; 
+                    break;
                 }
             }
         
@@ -55,26 +30,34 @@
         }
         
         
-        public function update($id,$o){
-
-
-
-
+        public static function update($id, $coche): bool {
+            foreach (self::$listaCoches as $index => $coche) {
+                if ($coche->getId() === $id) { // Compara el ID del coche
+                    self::$listaCoches[$index] = $coche; // Actualiza el coche en la lista
+                    return true; // Retorna true si se actualizó correctamente
+                }
+            }
+            return false; // Retorna false si no se encontró el coche
         }
-        public function delete($id): bool {
-            foreach ($this->listaCoches as $index => $coche) {
-                if ($coche['id'] === $id) { // Compara el id del coche
-                    unset($this->listaCoches[$index]); // Elimina el coche
-                    $this->listaCoches = array_values($this->listaCoches); // Reindexa el array
+        
+
+
+        public static function delete($id): bool {
+            foreach (self::$listaCoches as $index => $coche) {
+                if ($coche->getId() === $id) { // Compara el id del coche
+                    unset(self::$listaCoches[$index]); // Elimina el coche
+                    self::$listaCoches = array_values(self::$listaCoches); // Reindexa el array
                     return true; // Retorna true si se eliminó correctamente
                 }
             }
             return false; // Retorna false si no se encontró el coche
         }
-           
-        public function findAll():array{
+         
+        
+        public static function getAll():array
+        {
 
-            return $this->listaCoches;
+            return self::$listaCoches;
 
         }
 
