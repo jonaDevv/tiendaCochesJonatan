@@ -1,6 +1,6 @@
 <?php
 
-    Class RepoCoche implements RepoCrud{
+    //Class RepoCoche implements RepoCrud{
 
 
         //private static listaCoches = [new Coche(), new Coche()];
@@ -31,7 +31,7 @@
 
 
 
-    }
+    //}
 
 
 
