@@ -4,6 +4,81 @@
 
 <?php
 
+    Class User{
+
+        private string $nombre;
+        private string $password;
+      
+        public function __construct(string $nombre,string $password){
+
+            $this->setNombre($nombre);
+            $this->setPassword($password);
+            
+
+        }
+
+
+        public function getNombre():string
+        {
+
+            return $this->nombre;
+        }
+
+        public function setNombre($nombre):void
+        {
+
+            $this->nombre = strtoupper($nombre);
+
+
+        }
+
+        public function getPassword():string
+        {
+
+            return $this->password;
+        }
+
+        public function setPassword($password):void
+        {
+
+            $this->password = $password;
+
+
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
