@@ -17,7 +17,7 @@
             
         }
 
-        public static function read($nombre): User { 
+        public static function read($nombre): ?User { 
             $thisUser = null; 
 
             foreach (self::$listaUser as $user) {

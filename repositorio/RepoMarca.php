@@ -15,7 +15,7 @@
 
         }
 
-        public static function read($nombre):Marca{
+        public static function read($nombre):?Marca{
 
             $thisMarca =  null;
 

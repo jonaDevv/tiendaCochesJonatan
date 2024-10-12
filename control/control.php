@@ -10,7 +10,14 @@
     include_once($root."repositorio/repoCoche.php");
     include_once($root."modelo/Marca.php");
     include_once($root."modelo/Coche.php");
-   
+    include_once($root."helper/login.php");
+    include_once($root."helper/sesion.php");
+
+
+    
+    iniciaSesion();
+    
+    
 
 //include_once("../vista/Pintor.php");
 //include_once("../repositorio/RepoMarca.php");
@@ -22,6 +29,7 @@
 
 //Si me gusta voy a un repo a guardar, modificar etc.. y me traigo un array de objetos para darselos a la vista para que los pinte
 
+    //Arrancamos la aplicacion
     function run(){
 
 
@@ -34,13 +42,85 @@
 
 
         
+    } 
+
+
+
+    //ESPACIO DE CONTROL MEDIANTE ELSE IF
+
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $order =$_POST['order'];
+        
+
+        // Comenzamos la estructura switch
+        switch ($order) {
+            case 'vCarrito':
+                header("location:../modelo/Carrito.php");
+                break;
+            case 'blogin':
+                header("location:../vista/i.html");
+                break;
+            case 'compra':
+                $idn=$_POST['id'];
+                $marc=$_POST['marca'];
+                var_dump($idn);
+                cocheACarrito($idn);
+                header("location:../vista/listadoCoches.php?marca=$marc");
+                break;
+            case 'lMarcas':
+                
+                $marca=$_POST['marca'];
+                header("location:../vista/listadoCoches.php?marca=$marca");
+                break;
+            case 'logout':
+                logout();
+                    //Reconduciomos al index de nuevo
+                    echo "<h1>Hasta otra</h1>";
+                    header("refresh:1; url=../index.php");
+                    exit();
+                break;
+            default:
+                echo "Orden no válida.";
+                break;
+        }
+
+
     }  
 
-    function dameMarcas(){
 
 
 
-        $m1 = new Marca("FORD");
+
+    function vLogeo()
+    {
+        $us=$_GET['user'];
+        $pass=$_GET['password'];
+
+        header("location:../forms/LoginForm.html/?user=$us&&password=$pass");
+        exit();
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    function dameMarcas($user=null){
+
+
+
+        $m1 = new Marca("ford");
         $m2 = new Marca("mercedes");
         $m3 = new Marca("renault");
         $m4 = new Marca("seat");
@@ -59,13 +139,25 @@
 
         Pintor::pintaMarcas(RepoMarca::getAll());
 
+        if (isset($user)){
+            
+            Pintor::pintaInterfaceUser();
+            
+        }else{
+             Pintor::pintaBLogin();
+        }
+
+        
+
     }
 
 
-    function dameCoches(){
+    function dameCoches($marca,$user=null){
+
+        
 
 
-        $c1 = new Coche(1,"FORD","Mondeo");
+        $c1 = new Coche(1,"ford","Mondeo");
         $c2 = new Coche(2,"Mercedes","CLQ700");
         $c3 = new Coche(3,"renault","CLIO");
         $c4 = new Coche(4,"seat","Leon");
@@ -78,14 +170,52 @@
         repoCoche::create($c5);
 
         //if (isset($_POST['marca'])) {
-            $marca = "FORD";  
+           
         //}
 
 
         Pintor::pintaCoches(RepoCoche::getAll(),$marca);
 
+        Pintor::volver();
+        if (isset($user)){
+            
+            Pintor::pintaInterfaceUser();
+            
+        }else{
+             Pintor::pintaBLogin();
+        }
+
+        
+
+
+
+
+
     }
 
+
+    function cocheACarrito($id){
+        
+        $coche=RepoCoche::read($id);
+        
+        var_dump($coche);
+        if (isset($coche)) {
+            $newCoche = $coche;
+            array_push($_SESSION['carrito'], $newCoche);  // Agregar el modelo al carrito
+            Pintor::exito($newCoche);
+            
+        }else{
+
+            Pintor::error();
+        }
+
+
+    }
+
+    
+
+
+   
 
 
 

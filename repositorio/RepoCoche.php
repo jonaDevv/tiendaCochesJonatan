@@ -20,17 +20,18 @@
             
         }
 
-        public static function read($id): Coche { 
+        public static function read($id): ?Coche { 
             $thisCoche = null; 
         
             foreach (self::$listaCoches as $coche) {
-                if ($coche->getId() === $id) { 
+                if ($coche->getId() == $id) { 
                     $thisCoche = $coche; 
                     break;
                 }
             }
-        
+            
             return $thisCoche; // Retorna el coche encontrado o null
+           
         }
         
         

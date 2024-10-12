@@ -14,28 +14,15 @@
 
         
         //$_SESSION['USER']="";
-        unset($_SESSION);
+        session_unset(); 
         finalizaSesion();
 
     };
 
 
-    function estaLogeado(){
-
-
-         if (isset($_SESSION['user'])){
-
-            $respuesta=true;
-
-         }else{   
-
-            $respuesta=false;
-
-
-         }; 
-         return $respuesta;  //Devuelve TRUE o false
-
-    };
+    function estaLogeado() {
+        return isset($_SESSION['user']);
+    }
 
     
 
