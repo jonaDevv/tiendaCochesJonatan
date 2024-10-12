@@ -1,4 +1,8 @@
 <?php
+    $root = $_SERVER["DOCUMENT_ROOT"];
+    include_once($root."/repositorio/repoCrud.php");
+    include_once($root."/modelo/Coche.php");
+
 
     Class RepoCoche implements RepoCrud{
 

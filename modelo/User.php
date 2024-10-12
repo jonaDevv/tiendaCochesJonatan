@@ -27,7 +27,7 @@
         public function setNombre($nombre):void
         {
 
-            $this->nombre = $nombre;
+            $this->nombre = strtoupper($nombre);
 
 
         }

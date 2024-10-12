@@ -39,7 +39,7 @@
         public function setMarca($marca):void
         {
 
-            $this->marca = $marca;
+            $this->marca = strtoupper($marca);
 
 
         }
@@ -53,7 +53,7 @@
         public function setModelo($modelo):void
         {
 
-            $this->modelo = $modelo;
+            $this->modelo = strtoupper($modelo);
 
 
         }

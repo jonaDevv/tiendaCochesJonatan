@@ -1,13 +1,17 @@
 <?php
 
-    Class RepoMarca implements RepoCrud{
+    $root = $_SERVER["DOCUMENT_ROOT"];
+    include_once("repoCrud.php");
+    include_once($root."modelo/Marca.php");
+
+    Class repoMarca implements RepoCrud{
 
         public static $listaMarcas = [];
 
 
         public static function create($marca){
 
-            self::$listaMarcas = $marca;
+            self::$listaMarcas[] = $marca;
 
         }
 
@@ -29,14 +33,14 @@
 
         }
 
-        public static function update($nombre, $marca): bool {
+        public static function update($nombre, $nuevaMarca): bool {
             foreach (self::$listaMarcas as $index => $marca) {
-                if ($marca->getNombre() === $nombre) { // Compara el ID del coche
-                    self::$listaMarcas[$index] = $marca; // Actualiza el coche en la lista
+                if ($marca->getNombre() === $nombre) {
+                    self::$listaMarcas[$index] = $nuevaMarca; // Actualiza con la nueva marca
                     return true; // Retorna true si se actualizó correctamente
                 }
             }
-            return false; // Retorna false si no se encontró el coche
+            return false; // Retorna false si no se encontró la marca
         }
 
         public static function delete($nombre):bool
