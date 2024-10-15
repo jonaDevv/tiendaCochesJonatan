@@ -15,6 +15,7 @@
    
     if($user == "JONATAN" && $password == "1234") {
         login($user);
+        
     
         if(estaLogeado()) {
             header("location:../vista/listadoMarcas.php?user=$user");

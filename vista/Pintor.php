@@ -90,6 +90,36 @@
         }
 
 
+        public static function viewCarrito(){
+
+                        // Mostrar el carrito con el botón de eliminar
+            if (!empty($_SESSION['carrito'])) {
+                echo "<h2>Carrito de Compras:</h2><ul>";
+                foreach ($_SESSION['carrito'] as $index => $coche) {
+                    echo "<li>$coche 
+                        <form method='POST' action='' style='display:inline;'>
+                            <button type='submit' name='eliminar' value='$index'>Eliminar</button>
+                        </form>
+                        </li>";
+                }
+                echo "</ul><br><br>";
+                
+
+            } else {
+                echo "<p>El carrito está vacío.</p><br>";
+                
+                
+    
+            }
+            
+
+            Pintor::volver();
+
+
+
+        }
+
+
         public static function pintaBLogin(){
 
 
@@ -102,17 +132,28 @@
 
 
         }
+        
+
+        public static function pintaBCarrito(){
 
 
-        public static function pintaInterfaceUser(){
-
-
-            echo " <br><br>
+            echo " <br>
                     <form action='../modelo/Carrito.php' method='POST'>
                         <input type='hidden' name='order' value='vCarrito'>
                         <button type='submit'>Ver Carrito</button>
                     </form>";
 
+            
+
+
+
+        }
+
+
+        public static function pintaInterfaceUser(){
+
+
+            
             echo "<br><br><form action='../control/control.php' method='POST'>
             <input type='hidden' name='order' value='logout'><button type=submit>Cerrar sesión</button></form>";
 
@@ -121,7 +162,7 @@
         }
 
         public static function volver(){
-            echo '<form method="GET" action="' . htmlspecialchars($_SERVER['HTTP_REFERER']) . '">
+            echo '<br><br><form method="POST" action="' . htmlspecialchars($_SERVER['HTTP_REFERER']) . '">
                 <button type="submit">Volver</button>
                 </form>';
            // Cambia a la URL deseada
@@ -129,9 +170,10 @@
         }
 
 
-        public static function error(){
+        public static function error($error){
 
                 echo "No se ha podido realizar la operación";
+               
 
 
         }
@@ -139,7 +181,7 @@
         public static function exito($coche){
 
             echo "El $coche se ha añadido al carrito";
-
+            var_dump($coche);
 
         }
 

@@ -1,33 +1,29 @@
 <?php 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+
 
 
 
     $root = $_SERVER["DOCUMENT_ROOT"];
+    include_once($root."repositorio/repoMarca.php");
+    include_once($root."repositorio/repoCoche.php");
     include_once($root."vista/Pintor.php");
     include_once($root."repositorio/repoMarca.php");
     include_once($root."repositorio/repoCoche.php");
-    include_once($root."modelo/Marca.php");
-    include_once($root."modelo/Coche.php");
     include_once($root."helper/login.php");
     include_once($root."helper/sesion.php");
-
-
+    include_once($root."modelo/lCarrito.php");
+    include_once($root."modelo/Carrito.php");
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+    
     
     iniciaSesion();
+
     
+  
     
 
-//include_once("../vista/Pintor.php");
-//include_once("../repositorio/RepoMarca.php");
-
-//todo pasa por control
-//un fchero por cada
-//valido según quien es
-//Esta logeado o no esta logeado
-
-//Si me gusta voy a un repo a guardar, modificar etc.. y me traigo un array de objetos para darselos a la vista para que los pinte
 
     //Arrancamos la aplicacion
     function run(){
@@ -50,28 +46,32 @@
 
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
         $order =$_POST['order'];
         
 
         // Comenzamos la estructura switch
         switch ($order) {
             case 'vCarrito':
-                header("location:../modelo/Carrito.php");
+                header("location:../vista/verCarrito.php");
                 break;
             case 'blogin':
                 header("location:../vista/i.html");
                 break;
             case 'compra':
+
                 $idn=$_POST['id'];
                 $marc=$_POST['marca'];
                 var_dump($idn);
-                cocheACarrito($idn);
-                header("location:../vista/listadoCoches.php?marca=$marc");
+                paraCarrito($idn);
+              
                 break;
+                
             case 'lMarcas':
                 
                 $marca=$_POST['marca'];
                 header("location:../vista/listadoCoches.php?marca=$marca");
+                exit();
                 break;
             case 'logout':
                 logout();
@@ -139,6 +139,8 @@
 
         Pintor::pintaMarcas(RepoMarca::getAll());
 
+        Pintor::pintaBCarrito();
+
         if (isset($user)){
             
             Pintor::pintaInterfaceUser();
@@ -163,11 +165,11 @@
         $c4 = new Coche(4,"seat","Leon");
         $c5 = new Coche(5,"ford","focus rs3");
 
-        repoCoche::create($c1);
-        repoCoche::create($c2);
-        repoCoche::create($c3);
-        repoCoche::create($c4);
-        repoCoche::create($c5);
+        RepoCoche::create($c1);
+        RepoCoche::create($c2);
+        RepoCoche::create($c3);
+        RepoCoche::create($c4);
+        RepoCoche::create($c5);
 
         //if (isset($_POST['marca'])) {
            
@@ -176,7 +178,10 @@
 
         Pintor::pintaCoches(RepoCoche::getAll(),$marca);
 
+
         Pintor::volver();
+        Pintor::pintaBCarrito();
+
         if (isset($user)){
             
             Pintor::pintaInterfaceUser();
@@ -194,22 +199,16 @@
     }
 
 
-    function cocheACarrito($id){
+    function paraCarrito($n) {
         
-        $coche=RepoCoche::read($id);
+        echo "ID recibido: " . $n . "<br>"; // Verifica el ID recibido
+        $newCoche = RepoCoche::read($n);
         
-        var_dump($coche);
-        if (isset($coche)) {
-            $newCoche = $coche;
-            array_push($_SESSION['carrito'], $newCoche);  // Agregar el modelo al carrito
-            Pintor::exito($newCoche);
-            
-        }else{
-
-            Pintor::error();
+        if ($newCoche) {
+            echo "Coche encontrado: " . $newCoche->getModelo() . "<br>"; // Si existe, imprime el modelo
+        } else {
+            echo "No se encontró el coche con ID: $n<br>"; // Mensaje si no existe
         }
-
-
     }
 
     

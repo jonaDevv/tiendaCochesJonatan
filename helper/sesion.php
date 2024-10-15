@@ -34,7 +34,7 @@
     //Leer la sesion
     function escribirSesion($clave,$valor){ //Guardar cualquier clave valor
 
-        iniciaSesion();
+        
         $_SESSION[$clave]=$valor;
 
 

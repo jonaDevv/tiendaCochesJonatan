@@ -1,22 +1,33 @@
 <?php
-$origen=$_POST['origen'];
+
 $root = $_SERVER["DOCUMENT_ROOT"];
 
+include_once($root."control/control.php");
 include_once($root."helper/sesion.php");
 
-iniciaSesion();
-if (existeClave('carrito')){
+
+
+if (!existeClave('carrito')){
 
     escribirSesion('carrito',[]);
 };
-/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $verbo = $_POST['marca'];
-} else {
-    $verbo = $_GET['marca'];
-}*/
 
+function cocheACarrito($coche) {
+    if (!isset($_SESSION['carrito'])) {
+        $_SESSION['carrito'] = []; // Asegúrate de que la sesión del carrito esté inicializada
+    }
 
-//$marca = $verbo;
+    if (!empty($coche)) {
+        array_push($_SESSION['carrito'], $coche); // Agregar el coche al carrito
+        echo "<p>El coche {$coche->getId()} ha sido agregado al carrito.</p>";
+    } else {
+        
+      
+            
+        Pintor::error($coche);
+    }
+}
+
 
 
 // Eliminar el coche seleccionado del carrito
@@ -32,27 +43,7 @@ if (isset($_POST['eliminar'])) {
 
 
  
-// Mostrar el carrito con el botón de eliminar
-if (!empty($_SESSION['carrito'])) {
-    echo "<h2>Carrito de Compras:</h2><ul>";
-    foreach ($_SESSION['carrito'] as $index => $coche) {
-        echo "<li>$coche 
-              <form method='POST' action='' style='display:inline;'>
-                  <button type='submit' name='eliminar' value='$index'>Eliminar</button>
-              </form>
-              </li>";
-    }
-    echo "</ul><br><br>";
-    
-
-} else {
-    echo "<p>El carrito está vacío.</p><br>";
-    
-    
-    
-}
-
-Pintor::volver();
+/*
 
 /* 
 if (!empty($origen)) { //Si origen no esta vacio vuelve a la referencia
