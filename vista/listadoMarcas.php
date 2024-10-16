@@ -8,18 +8,17 @@ include_once($root."control/control.php");
 
 
 
-var_dump($_SESSION);
-if(!isset($user)){
-$user = null; // Obtener usuario de la sesión
-}
-if (estaLogeado()) {
-    // Usuario existe y está logueado
-    $user=$_SESSION['user'];
-}
+    if(!isset($user)){
+    $user = null; // Obtener usuario de la sesión
+    }
+    
+    if (estaLogeado()) {
+        // Usuario existe y está logueado
+        $user=$_SESSION['user'];
+    }
 
 
     dameMarcas($user);
-
 
 
 ?>

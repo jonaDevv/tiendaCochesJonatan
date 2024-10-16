@@ -9,6 +9,7 @@
 
     $root = $_SERVER["DOCUMENT_ROOT"];
     include_once($root."/control/control.php");
+    include_once($root."/repositorio/Conexion.php");
     
     class Pintor
     {
@@ -68,7 +69,7 @@
                         <form method='POST' action='../control/control.php' style='display:inline;'>
                             <input type='hidden' name='marca' value='".$coche->getMarca()."'>
                             <input type='hidden' name='order' value='compra'>
-                            <button type='submit' name='id' value='".$coche->getId()."'>COMPRAR</button>
+                                               <button type='submit' name='id' value='".$coche->getId()."'>COMPRAR</button><br>
                         </form>
                         </td>
                         </tr>";
@@ -96,8 +97,10 @@
             if (!empty($_SESSION['carrito'])) {
                 echo "<h2>Carrito de Compras:</h2><ul>";
                 foreach ($_SESSION['carrito'] as $index => $coche) {
-                    echo "<li>$coche 
-                        <form method='POST' action='' style='display:inline;'>
+                    echo "<li> 
+                    ".$coche->getMarca()." ".$coche->getModelo()."
+                        <form method='POST' action='../control/control.php' style='display:inline;'>
+                            <input type='hidden' name='order' value='eliminar'>
                             <button type='submit' name='eliminar' value='$index'>Eliminar</button>
                         </form>
                         </li>";
@@ -113,7 +116,7 @@
             }
             
 
-            Pintor::volver();
+            //Pintor::volver();
 
 
 
@@ -134,11 +137,13 @@
         }
         
 
-        public static function pintaBCarrito(){
+        public static function pintaBCarrito($origin=null,$marca=null){
 
 
             echo " <br>
-                    <form action='../modelo/Carrito.php' method='POST'>
+                    <form action='../control/control.php' method='POST'>
+                        <input type='hidden' name='volver' value='$origin'>
+                        <input type='hidden' name='marca' value='$marca'>
                         <input type='hidden' name='order' value='vCarrito'>
                         <button type='submit'>Ver Carrito</button>
                     </form>";
@@ -161,13 +166,25 @@
 
         }
 
-        public static function volver(){
+        public static function volverF($origen){
             echo '<br><br><form method="POST" action="' . htmlspecialchars($_SERVER['HTTP_REFERER']) . '">
                 <button type="submit">Volver</button>
                 </form>';
            // Cambia a la URL deseada
 
         }
+       
+        public static function volver($origen=null,$marca=null){
+                echo " <br>
+                            <form action='../control/control.php' method='POST'>
+                                <input type='hidden' name='marca' value='$marca'>
+                                <input type='hidden' name='origen' value='$origen'>
+                                <button type='submit'>Volver</button>
+                            </form>";
+        
+                }
+
+        
 
 
         public static function error($error){
@@ -181,7 +198,7 @@
         public static function exito($coche){
 
             echo "El $coche se ha añadido al carrito";
-            var_dump($coche);
+            
 
         }
 

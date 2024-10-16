@@ -7,10 +7,8 @@ include_once($root."control/control.php");
 include_once($root."helper/sesion.php");
 
 
-var_dump($_SESSION);
+
   $user=null;
-  $marca=$_GET['marca'];
-  
   iniciaSesion();
  
   if (!existeClave('carrito')){
@@ -18,21 +16,35 @@ var_dump($_SESSION);
         escribirSesion('carrito',[]);
     };
    
-   
-   
-
 
     if (estaLogeado()) {
         // Usuario existe y está logueado
         $user=$_SESSION['user'];
     }
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $verbo=$_POST['marca'];
+
+  }else{
+
+    $verbo=$_GET['marca'];
+  }
+
+
+
+
+  $marca=$verbo;
+
+  
+  
     
     
 
-        dameCoches($marca,$user);
+    dameCoches($marca,$user,$marca);
 
         
-    var_dump(RepoCoche::read("3"));
-        var_dump($_SESSION['carrito']);
+    
+       
 
 ?>

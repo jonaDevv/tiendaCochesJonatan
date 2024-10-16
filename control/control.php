@@ -9,6 +9,7 @@
     include_once($root."vista/Pintor.php");
     include_once($root."repositorio/repoMarca.php");
     include_once($root."repositorio/repoCoche.php");
+    include_once($root."repositorio/repoCocheBD.php");
     include_once($root."helper/login.php");
     include_once($root."helper/sesion.php");
     include_once($root."modelo/lCarrito.php");
@@ -42,30 +43,46 @@
 
 
 
-    //ESPACIO DE CONTROL MEDIANTE ELSE IF
+  
 
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
-        $order =$_POST['order'];
+        $order = $_POST['order'] ?? NULL;
         
 
-        // Comenzamos la estructura switch
+        // Comenzamos la estructura switch para que el controlador vaya repartiendo trabajo
         switch ($order) {
             case 'vCarrito':
-                header("location:../vista/verCarrito.php");
+                $or=$_POST['volver'];
+                $mark=$_POST['marca'];
+                header("location:../vista/verCarrito.php?origen=$or&&marca=$mark");
                 break;
+
+
             case 'blogin':
                 header("location:../vista/i.html");
                 break;
+
             case 'compra':
 
                 $idn=$_POST['id'];
                 $marc=$_POST['marca'];
-                var_dump($idn);
+                header("location:../vista/listadoCoches.php?marca=$marc");
                 paraCarrito($idn);
               
                 break;
+
+            case 'eliminar':
+
+                $index=$_POST['eliminar'];
+                
+                vaciarCarrito($index);
+                header("location:../vista/verCarrito.php");
+                  
+                break;
+
+
                 
             case 'lMarcas':
                 
@@ -73,6 +90,9 @@
                 header("location:../vista/listadoCoches.php?marca=$marca");
                 exit();
                 break;
+
+
+
             case 'logout':
                 logout();
                     //Reconduciomos al index de nuevo
@@ -81,12 +101,53 @@
                     exit();
                 break;
             default:
-                echo "Orden no válida.";
+                
                 break;
         }
 
 
     }  
+
+
+    //ESTRUCTURA DE CONTROL PARA VOLVER
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        $origen = $_POST['origen'] ?? NULL;
+        
+
+        // Comenzamos la estructura switch
+        switch ($origen) {
+
+            case 'MarcasCarrito':
+                header("location:../vista/listadoMarcas.php");
+                break;
+
+
+            case 'CocheMarca':
+                header("location:../vista/listadoMarcas.php");
+                break;
+
+            case 'CarritoCoche':
+
+                $m=$_POST['marca']?? null;
+                
+                header("location:../vista/listadoCoches.php?marca=$m");
+                
+               
+              
+                break;
+            
+           
+
+            default:
+                
+                echo "FALLOO";
+                break;
+        }
+
+
+    }  
+
 
 
 
@@ -118,28 +179,9 @@
 
     function dameMarcas($user=null){
 
-
-
-        $m1 = new Marca("ford");
-        $m2 = new Marca("mercedes");
-        $m3 = new Marca("renault");
-        $m4 = new Marca("seat");
-        $m5 = new Marca("fiat");
-
-       
-
-
-        repoMarca::create($m1);
-        repoMarca::create($m2);
-        repoMarca::create($m3);
-        repoMarca::create($m4);
-        repoMarca::create($m5);
-
-
-
         Pintor::pintaMarcas(RepoMarca::getAll());
 
-        Pintor::pintaBCarrito();
+        Pintor::pintaBCarrito('MarcasCarrito');
 
         if (isset($user)){
             
@@ -154,33 +196,20 @@
     }
 
 
+
+
+
     function dameCoches($marca,$user=null){
 
         
 
 
-        $c1 = new Coche(1,"ford","Mondeo");
-        $c2 = new Coche(2,"Mercedes","CLQ700");
-        $c3 = new Coche(3,"renault","CLIO");
-        $c4 = new Coche(4,"seat","Leon");
-        $c5 = new Coche(5,"ford","focus rs3");
-
-        RepoCoche::create($c1);
-        RepoCoche::create($c2);
-        RepoCoche::create($c3);
-        RepoCoche::create($c4);
-        RepoCoche::create($c5);
-
-        //if (isset($_POST['marca'])) {
-           
-        //}
+        Pintor::pintaCoches(RepoCocheBD::getAll(),$marca);
 
 
-        Pintor::pintaCoches(RepoCoche::getAll(),$marca);
-
-
-        Pintor::volver();
-        Pintor::pintaBCarrito();
+      
+        Pintor::pintaBCarrito('CarritoCoche',$marca);
+        Pintor::volver('CocheMarca');
 
         if (isset($user)){
             
@@ -201,14 +230,22 @@
 
     function paraCarrito($n) {
         
-        echo "ID recibido: " . $n . "<br>"; // Verifica el ID recibido
-        $newCoche = RepoCoche::read($n);
+      
+        $newCoche = RepoCocheBD::read($n);
+        cocheACarrito($newCoche);
         
-        if ($newCoche) {
-            echo "Coche encontrado: " . $newCoche->getModelo() . "<br>"; // Si existe, imprime el modelo
-        } else {
-            echo "No se encontró el coche con ID: $n<br>"; // Mensaje si no existe
-        }
+     
+    }
+
+
+    function vaciarCarrito($i) {
+        
+        
+        
+        eliminarCocheCarrito($i);
+        
+        
+       
     }
 
     
