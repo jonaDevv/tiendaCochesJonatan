@@ -4,7 +4,7 @@
 
         public static function create($o);
 
-        public static function read($id):object;
+        public static function read($id):?object;
 
         public static function update($id,$o):bool;
 

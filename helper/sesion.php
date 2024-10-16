@@ -23,16 +23,10 @@
         return $respuesta;
     };
 
-    function existeClave($clave){// Dice si existe o no. Devuelve true o false
+    function existeClave($clave):bool
+    {// Dice si existe o no. Devuelve true o false
 
-        if (isset($_SESSION['$clave'])){
-
-            $respuesta=true;
-
-         }else{   
-
-            $respuesta=false;
-         }; 
+        return isset($_SESSION[$clave]);
     };
 
 
@@ -40,7 +34,7 @@
     //Leer la sesion
     function escribirSesion($clave,$valor){ //Guardar cualquier clave valor
 
-        iniciaSesion();
+        
         $_SESSION[$clave]=$valor;
 
 

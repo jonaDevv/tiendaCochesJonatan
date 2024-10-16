@@ -1,22 +1,41 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
-    //private static con = null; //El tipo depende de la libreria que usemos pra la base de datos
+    Class BdConnection{
 
-    //public static function getConection() : PDO //Es el tipo de la clase conexion
-    //{
+            private static  $con= null; //El tipo depende de la libreria que usemos pra la base de datos
 
-        //if(con == null){
-                    //Ir a fichero de conexion para saber que hacer
-                //con = new PDO("cadena de conexión");
-            
-        //    } 
+            public static function getConnection() : PDO //Es el tipo de la clase conexion
+            {
+                $host = '127.0.0.1'; // Cambia localhost a 127.0.0.1
+                $db = 'repoCoches';
+                $user = 'root';
+                $pass = '123456DAW.';
 
-        //return con;
+               
+                  
+                if(self::$con == null){
+
+                    try{
+                        
+                        //Ir a fichero de conexion y leer desde ahi
+                        self::$con = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+
+                        
+                    } catch (PDOException $e) {
+                            // Manejo de errores de conexión
+                            die("Error en la conexión: " . $e->getMessage());
+                    }
+                   
+                } 
+
+                return self::$con;
 
 
-    //} 
+            } 
 
-
+    }
 
 
 
