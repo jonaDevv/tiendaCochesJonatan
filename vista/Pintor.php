@@ -8,8 +8,9 @@
     ini_set('display_errors', 1);
 
     $root = $_SERVER["DOCUMENT_ROOT"];
-    include_once($root."/control/control.php");
+   include_once($root."/control/control.php");
     include_once($root."/repositorio/Conexion.php");
+    require_once $root."_autoload.php";
     
     class Pintor
     {

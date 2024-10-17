@@ -2,12 +2,16 @@
 
     
 
-    function iniciaSesion(){
+    
 
-        session_start();
-
-
+    function iniciaSesion() {
+        if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+        }
     }
+
+
+    
 
     function finalizaSesion(){
 

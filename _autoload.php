@@ -1,7 +1,7 @@
 <?php
-// autoload.php
 spl_autoload_register(function($clase)
 {
+    $root = $_SERVER["DOCUMENT_ROOT"];
     // Lista de carpetas donde se buscarán las clases
     $carpetas = [
         'modelo',
@@ -13,24 +13,18 @@ spl_autoload_register(function($clase)
         'config'
     ];
 
-    $i = 0; // Inicializamos un contador para el índice del array
-    $numCarpetas = count($carpetas); // Obtenemos el número de carpetas
-
-    // Usamos un bucle while para recorrer las carpetas
-    while ($i < $numCarpetas) {
-        $fichero = $_SERVER['DOCUMENT_ROOT'] . '/' . $carpetas[$i] . '/' . $clase . '.php';
-
-        // Si el archivo existe, se carga
+    // Recorrer todas las carpetas para buscar el archivo de la clase
+    foreach ($carpetas as $carpeta) {
+        $fichero = $root . '/' . $carpeta . '/' . $clase . '.php';
+        
+        // Si el archivo existe en alguna carpeta, se carga
         if (file_exists($fichero)) {
             require_once $fichero;
-            return; // Salimos de la función una vez que se encuentra el archivo
+            return; // Salir del bucle una vez que se encuentra el archivo
         }
-
-        $i++; // Incrementamos el contador
     }
 
     // Si no se encuentra el archivo, podrías manejar el error
     throw new Exception("No se pudo cargar la clase: $clase");
-    
 });
 

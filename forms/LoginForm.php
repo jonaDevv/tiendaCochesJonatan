@@ -2,7 +2,7 @@
 <?php
     $root = $_SERVER["DOCUMENT_ROOT"];
     
-     include_once("$root/helper/login.php");
+    include_once("$root/helper/login.php");
      include_once("$root/helper/sesion.php");
 
      error_reporting(E_ALL);

@@ -8,12 +8,12 @@
     include_once($root."repositorio/repoCoche.php");
     include_once($root."vista/Pintor.php");
     include_once($root."repositorio/repoMarca.php");
-    include_once($root."repositorio/repoCoche.php");
     include_once($root."repositorio/repoCocheBD.php");
     include_once($root."helper/login.php");
     include_once($root."helper/sesion.php");
     include_once($root."modelo/lCarrito.php");
     include_once($root."modelo/Carrito.php");
+    require_once $root."_autoload.php";
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     
